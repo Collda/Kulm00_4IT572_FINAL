@@ -1,6 +1,6 @@
 kulm00: &kulm00
   docker:
-    - image : circleci:/node:8.11.3
+    - image : circleci/node:8.11.3
 
 version: 2.1
 jobs:
