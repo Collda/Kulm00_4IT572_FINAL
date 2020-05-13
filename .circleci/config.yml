@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build_and_test:
+  build:
     docker:
       - image: circleci/node:8.11.3
     steps:
@@ -33,10 +33,10 @@ workflows:
   version: 2.1
   build:
     jobs:
-      - build_and_test
+      - build
       - deploy:
          requires:
-          - build_and_test
+          - build
          filters:
            branches:
               only: master
