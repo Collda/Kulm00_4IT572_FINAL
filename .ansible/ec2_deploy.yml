@@ -9,15 +9,17 @@
         image: ami-085925f297f89fce1
         region: us-east-1
         key_name: presentation
-        vpc_subnet_id_: subnet-5c43bc7d
+        vpc_subnet_id: subnet-5c43bc7d
         assign_public_ip: yes
         wait: yes
         count: 1
         group: eshop
-        aws_access_key: "ASIA5NVQRWVCDU4D6P62"
-        aws_secret_key: "/KEzs9uJchYFayHSNvKs0uoCeS+yy2HyzHUXXq8n"
-        security_token: "FwoGZXIvYXdzEBMaDNnePyVYUkNN0msb8SLBAbIeu2KxtRTlDhTzc4mtJ5/d7kZjIYQyFabf28U+1DilI0H7m3y9BHppqtcvU0iaCFvt2R16ze61is6SwRjNI5jMYcDoj+no2B0APkE0ORDCvnGfx1cBq6N6b6ttioOOhF3vD8OZRUnYQkIHsXyDRuYO3G9jWwv6UlK7dAWxd9OjF8+qZguE+ox/MYqIMRZ4jLtmG/w0ubZotKM2WV2mNKOGDkVKphdsv6Z51MjHWiHpS9kFD0shNz09Z4b+JvmMQjoo8LPr9QUyLXF8wXNq+DmIMu3wxRQBbvzUdM+/hkzUilEHoBeXqJEXV7If0gK1G5+gvu8a3Q=="
-    - name: Add instance to group
+        aws_access_key: "ASIA5NVQRWVCLLLUYTP7"
+        aws_secret_key: "BRaFPpEG2lYqOwKNT7BApRO0ILOO7GeonYkIRCyh"
+        security_token: "FwoGZXIvYXdzECIaDL6/2NmLXnf7mIMSrCLBAbJ2OM/JzY7lxzYGem9TpaCBWNvrdYvbNJOu+WAWO6rb/QuVRaQBl6U3oOqOnnJ6+MN/z15sytXm33NfybHtNnI5sKmzjsrd09c3hwV/WJ5+xhsO6uqmCmbyOXyuIiUepc7GVu7YuGhMd9QmCTdruOwccHQs3KNg5UDgy+A4spGkzc5M/3sBuGPX1NcwHOB/qdqEESBNJfs5cKB3Q73tTyMtmxpAvZ+1wGCjWQX9V3Wmk8+4sz2aqImBSqAWAjqMqpsog9ju9QUyLW3GdlsmK0UKe6bupF6R28rFjAGWmff/5FlWtZDBv1VysJhOW3Mfor/GDfDOFw=="
+      register: ec2
+      
+    - name: Add instance hostname to group
       add_host: hostname={{ item.public_dns_name }} groupname=launched
       with_items: '{{ec2.instances}}'
 
@@ -36,22 +38,26 @@
         state: present
         update_cache: yes
       become: yes
+
     - service:
         name: docker
         state: started
         enabled: yes
       become: yes
+
     - name: Get project files from Git
       git:
         repo: 'https://github.com/Collda/Kulm00_4IT572_FINAL.git'
         dest: ./app
+
     - name: Build Dockerized e-shop
       shell: cd ./app && docker build -t eshop:latest .
       become: yes
+
     - name: Run Dockerized e-shop
       shell: docker run -p 80:3000 eshop:latest
       async: 90
       poll: 0
       become: yes
-    - wait_for:
-        port: 80
+
+    - wait_for: port=80
