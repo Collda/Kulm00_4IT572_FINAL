@@ -9,15 +9,17 @@
         image: ami-085925f297f89fce1
         region: us-east-1
         key_name: presentation
-        vpc_subnet_id_: subnet-5c43bc7d
+        vpc_subnet_id: subnet-5c43bc7d
         assign_public_ip: yes
         wait: yes
         count: 1
         group: eshop
-        aws_access_key: "ASIA5NVQRWVCMDFMEYCZ"
-        aws_secret_key: "aws_secret_access_key=Zg4U8dxqV/Zl5zcKD+eP/Bio2twQI175Tc9BcKde"
-        security_token: "FwoGZXIvYXdzEBEaDEz/UdOMqckN+vwuhSLBAdvoYuaY2jQLaZu6NXQypGB1rxn+oE5d0+rop8funmGWpgK9AG6FuHyMnGI/45hSaSunX8e3TQ1tsheBL1DQ96WV6GB+xiSNwlWkLf06fCg9cD5nh2Z+YZllzt2PZA9eJMH4XsIJeC7Sd5wIE80WIPCNL+2vesny4x9EdhiwdxSr0onZ4Pyw+FS1dYGMTZkt5GjEwjDvGdyqh7zxJvrfpkB8pNATRFLRtswjmeZUrJ9AvpXygB7A9Rek1U8OE3+YINIor/fq9QUyLa9xr9ke/sG3NYxmm+wDk45qzs5MWWVw3dnL3NaQ35PeadNnHeV7FDvtmqzgvg=="
-    - name: Add instance to group
+        aws_access_key: "ASIA5NVQRWVCLLLUYTP7"
+        aws_secret_key: "BRaFPpEG2lYqOwKNT7BApRO0ILOO7GeonYkIRCyh"
+        security_token: "FwoGZXIvYXdzECIaDL6/2NmLXnf7mIMSrCLBAbJ2OM/JzY7lxzYGem9TpaCBWNvrdYvbNJOu+WAWO6rb/QuVRaQBl6U3oOqOnnJ6+MN/z15sytXm33NfybHtNnI5sKmzjsrd09c3hwV/WJ5+xhsO6uqmCmbyOXyuIiUepc7GVu7YuGhMd9QmCTdruOwccHQs3KNg5UDgy+A4spGkzc5M/3sBuGPX1NcwHOB/qdqEESBNJfs5cKB3Q73tTyMtmxpAvZ+1wGCjWQX9V3Wmk8+4sz2aqImBSqAWAjqMqpsog9ju9QUyLW3GdlsmK0UKe6bupF6R28rFjAGWmff/5FlWtZDBv1VysJhOW3Mfor/GDfDOFw=="
+      register: ec2
+      
+    - name: Add instance hostname to group
       add_host: hostname={{ item.public_dns_name }} groupname=launched
       with_items: '{{ec2.instances}}'
 
