@@ -26,7 +26,7 @@ jobs:
       - run: >
           ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook
-          .ansible/ec2-deploy.yml
+          .ansible/ec2_deploy.yml
           --user=ubuntu
           --key-file=presentation.pem
 workflows:
